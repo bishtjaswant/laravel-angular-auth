@@ -1,3 +1,39 @@
-<p>
-  login works!
-</p>
+<div class="mt-4 col-md-6 offset-3">
+
+  <div class="card" style="width: 500px;">
+    <div class="card-body">
+      <div class="alert alert-danger" *ngIf="error">
+        {{error}}
+      </div>
+      <h5 class="card-title">Login</h5>
+      <div class="card-body">
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginRequest()">
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" formControlName="email" name="email" class="form-control" id="email" placeholder="Enter email">
+            <div class="text-danger" *ngIf="loginForm.controls.email.errors">
+              <p class="text-danger" *ngIf="loginForm.controls.email.touched && loginForm.controls.email.errors?.validEmailAddress"> email
+                is not valid </p>
+              <p class="text-danger" *ngIf="loginForm.controls.email.touched && loginForm.controls.email.errors?.required"> email
+                is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" required formControlName="password" name="password" class="form-control" id="password" placeholder="Password">
+            <p class="text-danger" *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required"> password
+              is required</p>
+
+          </div>
+          <div class="clearfix">
+            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary float-left">Sign-in</button>
+            <a routerLink="/signup" class="btn btn-success float-right">Sign-up</a>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
