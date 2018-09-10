@@ -1,3 +1,52 @@
-<p>
-  signup works!
-</p>
+<div class="mt-4 col-md-6 offset-3">
+
+  <div class="card" style="width: 500px;">
+    <div class="card-body shadow">
+
+      <h5 class="card-title">Register </h5>
+      <div class="card-body shadow">
+
+
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterRequest()">
+
+          <div class="form-group">
+            <label for="name">Your name </label>
+            <input type="name" formControlName="name" name="name" class="form-control" id="name" placeholder="Enter name">
+            <div class="text-danger" *ngIf="registerForm.controls.name.errors">
+              <p class="text-danger" *ngIf="registerForm.controls.name.touched && registerForm.controls.name.errors?.required"> user name is
+                required</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" formControlName="email" name="email" class="form-control" id="email" placeholder="Enter email">
+            <div class="text-danger" *ngIf="registerForm.controls.email.errors">
+              <p class="text-danger" *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.validEmailAddress"> email
+                is not valid </p>
+              <p class="text-danger" *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.required"> email
+                is required</p>
+
+                <p [hidden]="!error.email"> {{error.email}} </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" required formControlName="password" name="password" class="form-control" id="password" placeholder="Password">
+            <p class="text-danger" *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required"> password
+              is required</p>
+              <p class="text-danger" *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.minLength">
+                password must be 4 characters long </p>
+
+          </div>
+          <div class="clearfix">
+            <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary float-left">Sign-up</button>
+            <a routerLink="/login" class="btn btn-success float-right">Sign-in</a>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
