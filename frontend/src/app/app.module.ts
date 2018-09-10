@@ -10,6 +10,9 @@ import { ResponseRequestComponent } from './components/password/response-request
 import { AppRoutingModule } from './app-routing.module';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
+import { JarwisService } from './services/jarwis.service';
+import { AuthService } from './services/auth.service';
+import { TokenService } from './services/token.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,7 @@ import { LoginComponent } from './components/login/login.component';
     HttpClientModule
 
   ],
-  providers: [],
+  providers: [JarwisService, AuthService, TokenService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validator , FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { JarwisService } from '../../services/jarwis.service';
+import { TokenService } from '../../services/token.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +18,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private jarwis: JarwisService,
+    private token: TokenService,
+    private router: Router,
+    private auth: AuthService
   ) {
     this.createLoginForm();
   }
@@ -41,14 +47,23 @@ export class LoginComponent implements OnInit {
 
     console.log(credentials);
 
-    return this.http.post('http://127.0.0.1:8000/api/login', credentials)
+    this.jarwis.loginService(credentials)
           .subscribe(
-            data => console.log(data),
+            data => this.handleResponseData(data),
             error => this.handleError(error),
           );
 
 
   }
+
+
+  handleResponseData(data) {
+     this.token.hadleTokenAccess(data.access_token); // token verified
+    this.auth.authStatusChange(true);
+     this.router.navigateByUrl('/profile');
+
+  }
+
 
   handleError(error) {
     this.error = error.error.error;

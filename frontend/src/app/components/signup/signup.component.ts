@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { JarwisService } from '../../services/jarwis.service';
+import { Router } from '@angular/router';
+import { TokenService } from '../../services/token.service';
+
 
 @Component({
   selector: 'app-signup',
@@ -11,10 +15,13 @@ export class SignupComponent implements OnInit {
 
   registerForm: FormGroup;
   public error = [];
+  username;
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private jarwis: JarwisService,
+    private router: Router,
+    private token: TokenService
   ) {
     this.createRegisterAccountForm();
    }
@@ -72,16 +79,26 @@ export class SignupComponent implements OnInit {
            password: this.registerForm.get('password').value,
          };
 
-         console.log(signUpData);
-
-    return this.http.post('http://127.0.0.1:8000/api/signup', signUpData)
+        //  console.log(signUpData);
+      this.disableFormGroup();
+    this.jarwis.signupService(signUpData)
          .subscribe(
-           data => console.log(data),
+           data => this.handleResponseData(data),
            error => this.errorHandler(error),
          );
-
-
   }
+
+
+  handleResponseData(data) {
+    this.token.hadleTokenAccess(data.access_token); // token verified
+    this.getUserDetail(data.user); // got user name
+    this.router.navigateByUrl('/profile');
+}
+
+  getUserDetail(username) {
+    this.username = username;
+  }
+
 
 
   errorHandler( error ) {
